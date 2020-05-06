@@ -1,33 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>网络（一） TCP的三次握手与四次挥手</title>
-    <url>/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%80%EF%BC%89-TCP%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/</url>
-    <content><![CDATA[<h2 id="TCP的三次握手与四次挥手"><a href="#TCP的三次握手与四次挥手" class="headerlink" title="TCP的三次握手与四次挥手"></a>TCP的三次握手与四次挥手</h2><h4 id="1-说说TCP的三次握手？"><a href="#1-说说TCP的三次握手？" class="headerlink" title="1. 说说TCP的三次握手？"></a>1. 说说TCP的三次握手？</h4><p><img src="https://img-blog.csdnimg.cn/20200406141726281.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NDcxMjc=,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<pre><code>第一次握手：建立连接时，客户端发送连接请求报文段，将SYN位置为1，随机产生seq number = x的数据包到服务器，客户端进入SYN_SENT状态，等待服务器确认。主机B由SYN=1知道，A要建立联机。
-第二次握手：服务器收到客户端发送的SYN报文段，需要对这个SYN报文段进行确认，这时ack为x+1（即seq+1）。同时自己也发送SYN请求信息，将SYN位置为1，seq为y。服务器将上述所有信息放到一个报文段中，即SYN+ACK包，并一发送给服务端。此时服务器进入SYN_RECV状态；
-第三次握手：客户端收到服务器的SYN+ACK包，检查ack number是否正确，即第一次发送的seq+1。以及位码ACK是否为1。若正确，将ack设置为y+1，ACK位码设置为1。向服务器发送ACK报文段。主机B确认seq值和ack=1后，则连接成功。这个包发送完毕后，客户端和服务器都进入ESTABLISHED（TCP连接成功）状态，完成三次握手。</code></pre><p>注意一下，上面的SYN、ACK为状态位。SYK表示发起一个连接，ACK为回复。seq number为序号，这个是为了解决乱序的问题。ack number是确认序号，如果没收到ack number则重新发送，解决了丢包的问题。</p>
-<h4 id="2-说说TCP的四次挥手？"><a href="#2-说说TCP的四次挥手？" class="headerlink" title="2. 说说TCP的四次挥手？"></a>2. 说说TCP的四次挥手？</h4><p><img src="https://img-blog.csdnimg.cn/20200406142329738.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NDcxMjc=,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<pre><code>第一次挥手：主机1（可以使客户端，也可以是服务器端），设置seq number和ack number，向主机2发送一个FIN报文段；此时，主机1进入FIN_WAIT_1状态；这表示主机1没有数据要发送给主机2了；
-第二次挥手：主机2收到了主机1发送的FIN报文段，向主机1回一个ACK报文段，ack number为seq number加1；主机1进入FIN_WAIT_2状态；主机2告诉主机1，我也没有数据要发送了，可以进行关闭连接了；
-第三次挥手：主机2向主机1发送FIN报文段，请求关闭连接，同时主机2进入CLOSE_WAIT状态；
-第四次挥手：主机1收到主机2发送的FIN报文段，向主机2发送ACK报文段，然后主机1进入TIME_WAIT状态；主机2收到主机1的ACK报文段以后，就关闭连接；此时，主机1等待2MSL后依然没有收到回复，则证明Server端已正常关闭，那好，主机1也可以关闭连接了。</code></pre><h4 id="3-TCP为什么是三次握手，四次挥手？"><a href="#3-TCP为什么是三次握手，四次挥手？" class="headerlink" title="3.TCP为什么是三次握手，四次挥手？"></a>3.TCP为什么是三次握手，四次挥手？</h4><h5 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h5><p>首先我们要知道三次握手的目的。<br>假设我们Client发出的SYN报文段并没有丢失，而是在某个网络结点长时间滞留了，以致延误到连接释放以后的某个时间才到Server。<br>So，三次握手的目的为：</p>
-<pre><code>防止已失效的连接请求报文段突然又传到了Server端，因而产生错误</code></pre><p>什么错误呢？想象一下如果是两次握手会怎么样？server收到了请求报文段，知道了 哦 Client要请求建立连接，那我回个确认报文段，新的连接就建立了。这就是两次握手，你们觉得妥么？<br>Client发的是失效报文段呀，都已经失效了大哥，你回个ACK报文段就跟人家建立连接了？两次握手显然不行，所以需要三次握手。<br>三次握手会怎样呢？由于Client并没有发出建立连接的请求，这请求是我刚才发的，早就失效了。你说我之前死皮赖脸追你你不同意，现在我不喜欢你了，你又反追回来，那我肯定不同意。所以我不会理会你。Server也不会傻了吧唧在那等着，三次握手避免了让server端一直等待，浪费资源。过了一会没收到Client的ACK确认报文段他就放弃了，不等了。<br>So，总结一下，</p>
-<pre><code>三次握手保证了数据的正确性，避免了因网络问题带来的问题。同时防止server端的一直等待，浪费资源。</code></pre><h5 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h5><p>很多小伙伴会有疑问，为啥握手是三次，挥手成四次了？<br>好聚好散嘛，毕竟相爱一场，告别要正式一些。<br>开玩笑，其实这是由于TCP半关闭造成的。啥是半关闭呢？简单来说，一方发了FIN，另一方没有发FIN之前，还可以正常发送数据。<br>因为请求建立连接的时候</p>
-<pre><code>Client发个SYN，Server可以回复SYN+ACK报文。因为这是请求建立连接，注意，连接还没建立呢。</code></pre><p>而请求关闭连接呢，关闭之前所有数据都发完了么？没发完你就关闭了，是不是出问题。</p>
-<pre><code>所以，主机1发个FIN报文段，主机2先回个ACK报文段，告诉主机1，OK我知道你要请求关闭连接，别着急，我这还有报文没发完呢。等主机2所有报文都发完了，再回主机1个FIN报文段。</code></pre><h4 id="4-TIME-WAIT状态了解么？这里面有个时间，聊一下？"><a href="#4-TIME-WAIT状态了解么？这里面有个时间，聊一下？" class="headerlink" title="4. TIME_WAIT状态了解么？这里面有个时间，聊一下？"></a>4. TIME_WAIT状态了解么？这里面有个时间，聊一下？</h4><pre><code>先明说，这里有个时间的概念是2MSL。</code></pre><p>首先科普一下MSL</p>
-<pre><code>MSL（Maximum Segment Lifetime），指一个片段在网络中的最大存活时间</code></pre><p>这是在TCP四次挥手的后两次做的文章。<br>我们知道，主机2发完FIN报文段后进入了CLOSE_WAIT状态，同时，主机1发完ACK报文段进入TIME_WAIT状态。这个时候，主机1要等2MSL的时间，如果没有再次收到主机2发来的FIN报文段，那么说明连接成功关闭了。<br>为什么主机1要等2MSL呢？因为我们必须假设网络是不可靠的，我主机1最后发的ACK报文段可能出问题了。所以，主机2等了MSL收不到主机1发的ACK，就会重新发FIN报文段给主机1。所以主机1才要等2MSL。这保证了数据的正确性，避免了因网络问题，报文段丢失所带来的问题。</p>
-]]></content>
-      <categories>
-        <category>计算机网络</category>
-      </categories>
-      <tags>
-        <tag>三次握手</tag>
-        <tag>四次挥手</tag>
-        <tag>2MSL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>网络（二）带你走进HTTP的世界</title>
     <url>/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%BA%8C%EF%BC%89%E5%B8%A6%E4%BD%A0%E8%B5%B0%E8%BF%9BHTTP%E7%9A%84%E4%B8%96%E7%95%8C/</url>
     <content><![CDATA[<h4 id="1-什么是HTTP？"><a href="#1-什么是HTTP？" class="headerlink" title="1. 什么是HTTP？"></a>1. 什么是HTTP？</h4><p>HTTP协议（HyperText Transfer Protocol，超文本传输协议）是因特网上应用最为广泛的一种网络传输协议，所有的WWW文件都必须遵守这个标准。</p>
@@ -84,6 +57,33 @@
         <tag>流量控制</tag>
         <tag>慢开始</tag>
         <tag>快重传</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络（一） TCP的三次握手与四次挥手</title>
+    <url>/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%80%EF%BC%89-TCP%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/</url>
+    <content><![CDATA[<h2 id="TCP的三次握手与四次挥手"><a href="#TCP的三次握手与四次挥手" class="headerlink" title="TCP的三次握手与四次挥手"></a>TCP的三次握手与四次挥手</h2><h4 id="1-说说TCP的三次握手？"><a href="#1-说说TCP的三次握手？" class="headerlink" title="1. 说说TCP的三次握手？"></a>1. 说说TCP的三次握手？</h4><p><img src="https://img-blog.csdnimg.cn/20200406141726281.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NDcxMjc=,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<pre><code>第一次握手：建立连接时，客户端发送连接请求报文段，将SYN位置为1，随机产生seq number = x的数据包到服务器，客户端进入SYN_SENT状态，等待服务器确认。主机B由SYN=1知道，A要建立联机。
+第二次握手：服务器收到客户端发送的SYN报文段，需要对这个SYN报文段进行确认，这时ack为x+1（即seq+1）。同时自己也发送SYN请求信息，将SYN位置为1，seq为y。服务器将上述所有信息放到一个报文段中，即SYN+ACK包，并一发送给服务端。此时服务器进入SYN_RECV状态；
+第三次握手：客户端收到服务器的SYN+ACK包，检查ack number是否正确，即第一次发送的seq+1。以及位码ACK是否为1。若正确，将ack设置为y+1，ACK位码设置为1。向服务器发送ACK报文段。主机B确认seq值和ack=1后，则连接成功。这个包发送完毕后，客户端和服务器都进入ESTABLISHED（TCP连接成功）状态，完成三次握手。</code></pre><p>注意一下，上面的SYN、ACK为状态位。SYK表示发起一个连接，ACK为回复。seq number为序号，这个是为了解决乱序的问题。ack number是确认序号，如果没收到ack number则重新发送，解决了丢包的问题。</p>
+<h4 id="2-说说TCP的四次挥手？"><a href="#2-说说TCP的四次挥手？" class="headerlink" title="2. 说说TCP的四次挥手？"></a>2. 说说TCP的四次挥手？</h4><p><img src="https://img-blog.csdnimg.cn/20200406142329738.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NDcxMjc=,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<pre><code>第一次挥手：主机1（可以使客户端，也可以是服务器端），设置seq number和ack number，向主机2发送一个FIN报文段；此时，主机1进入FIN_WAIT_1状态；这表示主机1没有数据要发送给主机2了；
+第二次挥手：主机2收到了主机1发送的FIN报文段，向主机1回一个ACK报文段，ack number为seq number加1；主机1进入FIN_WAIT_2状态；主机2告诉主机1，我也没有数据要发送了，可以进行关闭连接了；
+第三次挥手：主机2向主机1发送FIN报文段，请求关闭连接，同时主机2进入CLOSE_WAIT状态；
+第四次挥手：主机1收到主机2发送的FIN报文段，向主机2发送ACK报文段，然后主机1进入TIME_WAIT状态；主机2收到主机1的ACK报文段以后，就关闭连接；此时，主机1等待2MSL后依然没有收到回复，则证明Server端已正常关闭，那好，主机1也可以关闭连接了。</code></pre><h4 id="3-TCP为什么是三次握手，四次挥手？"><a href="#3-TCP为什么是三次握手，四次挥手？" class="headerlink" title="3.TCP为什么是三次握手，四次挥手？"></a>3.TCP为什么是三次握手，四次挥手？</h4><h5 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h5><p>首先我们要知道三次握手的目的。<br>假设我们Client发出的SYN报文段并没有丢失，而是在某个网络结点长时间滞留了，以致延误到连接释放以后的某个时间才到Server。<br>So，三次握手的目的为：</p>
+<pre><code>防止已失效的连接请求报文段突然又传到了Server端，因而产生错误</code></pre><p>什么错误呢？想象一下如果是两次握手会怎么样？server收到了请求报文段，知道了 哦 Client要请求建立连接，那我回个确认报文段，新的连接就建立了。这就是两次握手，你们觉得妥么？<br>Client发的是失效报文段呀，都已经失效了大哥，你回个ACK报文段就跟人家建立连接了？两次握手显然不行，所以需要三次握手。<br>三次握手会怎样呢？由于Client并没有发出建立连接的请求，这请求是我刚才发的，早就失效了。你说我之前死皮赖脸追你你不同意，现在我不喜欢你了，你又反追回来，那我肯定不同意。所以我不会理会你。Server也不会傻了吧唧在那等着，三次握手避免了让server端一直等待，浪费资源。过了一会没收到Client的ACK确认报文段他就放弃了，不等了。<br>So，总结一下，</p>
+<pre><code>三次握手保证了数据的正确性，避免了因网络问题带来的问题。同时防止server端的一直等待，浪费资源。</code></pre><h5 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h5><p>很多小伙伴会有疑问，为啥握手是三次，挥手成四次了？<br>好聚好散嘛，毕竟相爱一场，告别要正式一些。<br>开玩笑，其实这是由于TCP半关闭造成的。啥是半关闭呢？简单来说，一方发了FIN，另一方没有发FIN之前，还可以正常发送数据。<br>因为请求建立连接的时候</p>
+<pre><code>Client发个SYN，Server可以回复SYN+ACK报文。因为这是请求建立连接，注意，连接还没建立呢。</code></pre><p>而请求关闭连接呢，关闭之前所有数据都发完了么？没发完你就关闭了，是不是出问题。</p>
+<pre><code>所以，主机1发个FIN报文段，主机2先回个ACK报文段，告诉主机1，OK我知道你要请求关闭连接，别着急，我这还有报文没发完呢。等主机2所有报文都发完了，再回主机1个FIN报文段。</code></pre><h4 id="4-TIME-WAIT状态了解么？这里面有个时间，聊一下？"><a href="#4-TIME-WAIT状态了解么？这里面有个时间，聊一下？" class="headerlink" title="4. TIME_WAIT状态了解么？这里面有个时间，聊一下？"></a>4. TIME_WAIT状态了解么？这里面有个时间，聊一下？</h4><pre><code>先明说，这里有个时间的概念是2MSL。</code></pre><p>首先科普一下MSL</p>
+<pre><code>MSL（Maximum Segment Lifetime），指一个片段在网络中的最大存活时间</code></pre><p>这是在TCP四次挥手的后两次做的文章。<br>我们知道，主机2发完FIN报文段后进入了CLOSE_WAIT状态，同时，主机1发完ACK报文段进入TIME_WAIT状态。这个时候，主机1要等2MSL的时间，如果没有再次收到主机2发来的FIN报文段，那么说明连接成功关闭了。<br>为什么主机1要等2MSL呢？因为我们必须假设网络是不可靠的，我主机1最后发的ACK报文段可能出问题了。所以，主机2等了MSL收不到主机1发的ACK，就会重新发FIN报文段给主机1。所以主机1才要等2MSL。这保证了数据的正确性，避免了因网络问题，报文段丢失所带来的问题。</p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>三次握手</tag>
+        <tag>四次挥手</tag>
+        <tag>2MSL</tag>
       </tags>
   </entry>
 </search>
