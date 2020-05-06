@@ -79,14 +79,21 @@
 
 
 
-<meta name="description" content="秃头小宝贝 熬夜小能手就职于百度北京总部">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Mr Lee&#39;s blog">
-<meta property="og:url" content="https://liyunqiu-boot.github.io/archives/2020/index.html">
+<meta name="description" content="说说TCP和UDP1. 先说说TCP和UDP有什么区别？1）TCP是面向连接的，UDP是面向无连接的 2）TCP保证了数据的正确性，而UDP可能丢包 3）TCP保证数据顺序，而UDP不保证 4）TCP是面向字节流的，而UDP是基于数据报的 5）TCP数据传输慢，而UDP数据传输快 6）UDP相比TCP来说，程序结构较简单。TCP对系统资源要求较多，UDP对系统资源要求较少2. 你刚才说面向连接，什">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络面试题（三） 说说TCP和UDP">
+<meta property="og:url" content="https://liyunqiu-boot.github.io/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%89%EF%BC%89-%E8%81%8A%E8%81%8ATCP%E5%92%8CUDP/index.html">
 <meta property="og:site_name" content="Mr Lee&#39;s blog">
-<meta property="og:description" content="秃头小宝贝 熬夜小能手就职于百度北京总部">
+<meta property="og:description" content="说说TCP和UDP1. 先说说TCP和UDP有什么区别？1）TCP是面向连接的，UDP是面向无连接的 2）TCP保证了数据的正确性，而UDP可能丢包 3）TCP保证数据顺序，而UDP不保证 4）TCP是面向字节流的，而UDP是基于数据报的 5）TCP数据传输慢，而UDP数据传输快 6）UDP相比TCP来说，程序结构较简单。TCP对系统资源要求较多，UDP对系统资源要求较少2. 你刚才说面向连接，什">
+<meta property="og:image" content="https://img-blog.csdn.net/20140509220855687?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWVjaGFvZGVjaHVudGlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190701103337907.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200405201704612.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NDcxMjc=,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200406140737163.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NDcxMjc=,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2020-05-05T15:06:08.000Z">
+<meta property="article:modified_time" content="2020-05-06T05:44:11.590Z">
 <meta property="article:author" content="李蕴遒">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20140509220855687?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWVjaGFvZGVjaHVudGlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 
 
 
@@ -116,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="https://liyunqiu-boot.github.io/archives/2020/"/>
+  <link rel="canonical" href="https://liyunqiu-boot.github.io/2020/05/05/网络面试题（三）-聊聊TCP和UDP/"/>
 
 
 
 
 
-  <title>归档 | Mr Lee's blog</title>
+  <title>网络面试题（三） 说说TCP和UDP | Mr Lee's blog</title>
   
 
 
@@ -141,7 +148,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -269,148 +276,264 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liyunqiu-boot.github.io/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%89%EF%BC%89-%E8%81%8A%E8%81%8ATCP%E5%92%8CUDP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李蕴遒">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr Lee's blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">网络面试题（三） 说说TCP和UDP</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-05T23:06:08+08:00">
+                2020-05-05
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-05-06T13:44:11+08:00">
+                2020-05-06
+              </time>
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 3 篇日志。 继续努力。
-      </span>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2020">2020</h1>
-          </div>
-        
-        
 
-        
-
- <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-       <h2 class="post-title">
+          
             
-            <a class="post-title-link" href="/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%89%EF%BC%89-%E8%81%8A%E8%81%8ATCP%E5%92%8CUDP/" itemprop="url">
-                
-                <span itemprop="name">网络面试题（三） 说说TCP和UDP</span>
-                
-            </a>
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%89%EF%BC%89-%E8%81%8A%E8%81%8ATCP%E5%92%8CUDP/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2020/05/05/网络面试题（三）-聊聊TCP和UDP/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
-            </h2>
+          
 
-        <div class="post-meta">
-            <time class="post-time" itemprop="dateCreated"
-                  datetime="2020-05-05T23:06:08+08:00"
-                  content="2020-05-05" >
-                05-05
-            </time>
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+
         </div>
+      </header>
+    
 
-    </header>
-</article>
-
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
- <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-       <h2 class="post-title">
-            
-            <a class="post-title-link" href="/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%BA%8C%EF%BC%89%E5%B8%A6%E4%BD%A0%E8%B5%B0%E8%BF%9BHTTP%E7%9A%84%E4%B8%96%E7%95%8C/" itemprop="url">
-                
-                <span itemprop="name">网络面试题（二）带你走进HTTP的世界</span>
-                
-            </a>
-            
-            </h2>
-
-        <div class="post-meta">
-            <time class="post-time" itemprop="dateCreated"
-                  datetime="2020-05-05T23:03:03+08:00"
-                  content="2020-05-05" >
-                05-05
-            </time>
-        </div>
-
-    </header>
-</article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
- <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-       <h2 class="post-title">
-            
-            <a class="post-title-link" href="/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%80%EF%BC%89-TCP%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/" itemprop="url">
-                
-                <span itemprop="name">网络面试题（一） TCP的三次握手与四次挥手</span>
-                
-            </a>
-            
-            </h2>
-
-        <div class="post-meta">
-            <time class="post-time" itemprop="dateCreated"
-                  datetime="2020-05-05T22:59:46+08:00"
-                  content="2020-05-05" >
-                05-05
-            </time>
-        </div>
-
-    </header>
-</article>
-
-
+      
+        <h2 id="说说TCP和UDP"><a href="#说说TCP和UDP" class="headerlink" title="说说TCP和UDP"></a>说说TCP和UDP</h2><h4 id="1-先说说TCP和UDP有什么区别？"><a href="#1-先说说TCP和UDP有什么区别？" class="headerlink" title="1. 先说说TCP和UDP有什么区别？"></a>1. 先说说TCP和UDP有什么区别？</h4><pre><code>1）TCP是面向连接的，UDP是面向无连接的
+2）TCP保证了数据的正确性，而UDP可能丢包
+3）TCP保证数据顺序，而UDP不保证
+4）TCP是面向字节流的，而UDP是基于数据报的
+5）TCP数据传输慢，而UDP数据传输快
+6）UDP相比TCP来说，程序结构较简单。TCP对系统资源要求较多，UDP对系统资源要求较少</code></pre><h4 id="2-你刚才说面向连接，什么是面向连接？"><a href="#2-你刚才说面向连接，什么是面向连接？" class="headerlink" title="2. 你刚才说面向连接，什么是面向连接？"></a>2. 你刚才说面向连接，什么是面向连接？</h4><pre><code>在互通之前，面向连接的协议会先建立连接，比如TCP的三次握手，而UDP则不会。所以说TCP是面向连接，UDP是面向无连接的。</code></pre><h4 id="3-TCP为什么是可靠连接呢？TCP是怎样保证了数据的正确性？"><a href="#3-TCP为什么是可靠连接呢？TCP是怎样保证了数据的正确性？" class="headerlink" title="3. TCP为什么是可靠连接呢？TCP是怎样保证了数据的正确性？"></a>3. TCP为什么是可靠连接呢？TCP是怎样保证了数据的正确性？</h4><pre><code>1）数据包校验：目的是检测数据在传输过程中的任何变化，若校验出包有错，则丢弃报文段且不给出响应，这时TCP发送数据端超时后会重发数据。
+2）对失序的数据包重新排序：若TCP报文段失序到达，则将失序的数据重新排序，再交给应用层。
+3）丢弃重复数据
+4）应答机制：TCP一端收到另一端的数据，它将发个确认报文段。
+5）超时重发：当TCP发出一个段后，它将启动一个定时器，等待目的端确认收到这个报文段。如果不能及时收到一个确认，将重发这个报文段。
+6）流量控制：TCP每一边都有固定大小的缓冲空间。TCP的接收端只允许发送端发送我缓冲区所能接纳的数据，防止我缓冲区数据溢出。这就是流量控制。</code></pre><h4 id="4-说说流量控制和拥塞控制？"><a href="#4-说说流量控制和拥塞控制？" class="headerlink" title="4. 说说流量控制和拥塞控制？"></a>4. 说说流量控制和拥塞控制？</h4><p>区别：流量控制是防止数据发送的过快，接收方来不及接收，造成数据的丢失。<br>拥塞控制是防止过多的数据注入网络中，导致网络中的路由器或链路过载。</p>
+<h5 id="流量控制："><a href="#流量控制：" class="headerlink" title="流量控制："></a>流量控制：</h5><p>AB连接建立起来后，会进行窗口协议。B会将自己的窗口大小告诉A，告诉它你发的数据大小不能超过我的窗口大小。<br>当B的缓冲区满后，会给A发个ACK，告诉A我这满了，别再发了。当B富裕的时候，也给A发个ACK，告诉A我这有位置了，你发吧。但是如果这个ACK丢了呢？<br>网络就是要考虑各种报文段丢了的情况…客户端会设置一个计时器，时间到了之后还没收到窗口更新报文，就发一个查询窗口的报文段，这样就避免了死锁等待。<br><img src="https://img-blog.csdn.net/20140509220855687?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWVjaGFvZGVjaHVudGlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="在这里插入图片描述"></p>
+<h5 id="拥塞控制："><a href="#拥塞控制：" class="headerlink" title="拥塞控制："></a>拥塞控制：</h5><p>几种拥塞控制的方法：慢开始，拥塞避免，快重传，快恢复。<br>发送方维持一个拥塞窗口（cwnd）的状态变量。记住，这个cwnd的大小取决于网络的拥塞程度，是动态变化的。<br>1）慢开始算法：当主机发送数据时，如果立即把大量数据字节注入网络中，那么就有可能引起网络拥塞。所以刚开始肯定要慢慢发，试探性的发，从小到大逐渐增大发送窗口。我们先把cwnd设置为一个最大报文段MSS，没收到一个确认报文段后，拥塞窗口再增一个MSS。用这种方式增大发送方的拥塞窗口显然很合理。<br>2）拥塞避免：每经过一个往返时间RTT，就把发送方的拥塞窗口cwnd加1，而不是慢开始那样加倍。这样拥塞窗口会按线性规律缓慢增长。<br>3）快重传：如果发出去的报文段丢了的话，对方是不会给你发确认报文段的。到了那个重传计时器设定的时间，发送端就会发送确认报文段的。如果没有快重传是什么样呢？<br>发送端：你收着没呢？ 接收端：…<br>发送端：你收着没呢？ 接收端：…<br>发送端：你收着没呢？ 接收端：…<br>OK，这时候，发送端发了三次确认报文段后，你接收端都不理我，那肯定没收到啊。那我重发一下吧。这就是快重传。<br>4）快恢复：搭配快重传来的一个算法。<br><img src="https://img-blog.csdnimg.cn/20190701103337907.png" alt="在这里插入图片描述"></p>
+<h4 id="4-你刚才说了报文头，具体说下TCP的报头吧，都有哪些内容，分别有什么用？"><a href="#4-你刚才说了报文头，具体说下TCP的报头吧，都有哪些内容，分别有什么用？" class="headerlink" title="4. 你刚才说了报文头，具体说下TCP的报头吧，都有哪些内容，分别有什么用？"></a>4. 你刚才说了报文头，具体说下TCP的报头吧，都有哪些内容，分别有什么用？</h4><p><img src="https://img-blog.csdnimg.cn/20200405201704612.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NDcxMjc=,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<pre><code>首先，源端口和目的端口是不可少的。
+接下来是包的序号（seq number），主要是为了解决乱序的问题。你不编号个号鬼知道这么多包谁先来的，这不就保证了按序到达么。
+确认序号（ack number），发出去的包应该有确认，这样能知道对方是否收到，如果没收到的话就重新发送一次，这个解决的是不丢包的问题。
+状态位。SYN是发起一个连接，ACK是回复，RST是重新连接，FIN是结束连接。因为TCP是面向连接的协议，因此需要双方维护连接的状态，这些状态位的包会引起双方的状态变更。
+窗口大小，TCP要做流量控制，需要通信双方各声明一个窗口，标识自己当前的处理能力。</code></pre><h4 id="5-简单说下UDP的特点吧？"><a href="#5-简单说下UDP的特点吧？" class="headerlink" title="5. 简单说下UDP的特点吧？"></a>5. 简单说下UDP的特点吧？</h4><pre><code>1）沟通简单，不需要大量的数据结构，处理逻辑和报头字段
+2）轻信他人，它不会建立连接，但是会监听这个地方，谁都可以传给它数据，它也可以传给任何人数据，甚至可以同时传给多个人数据。
+3）愣头青，做事不懂得变通。UDP不会根据网络的情况进行拥塞控制，无论是否丢包，它该咋发还咋发。</code></pre><h4 id="6-说下TCP和UDP的主要应用场景吧？"><a href="#6-说下TCP和UDP的主要应用场景吧？" class="headerlink" title="6.说下TCP和UDP的主要应用场景吧？"></a>6.说下TCP和UDP的主要应用场景吧？</h4><h5 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h5><pre><code>当对网络通讯质量有要求的时候。比如，整个数据都要准确无误的传递给对方，这往往用于一些要求可靠的应用。
+比如HTTP、HTTPS、FTP等传输文件的协议。POP、SMTP等邮件传输的协议。</code></pre><h5 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h5><pre><code>1）UDP主要用在资源少，网络情况稳定的内网，或者对于丢包不敏感的应用。
+2）不需要一对一沟通，建立连接，而是可以广播的应用。因为它不面向连接，所以可以做到一对多，承担广播或者多播的协议。
+3）需要处理速度快，可以容忍丢包，即使网络拥塞，也毫不退缩，一往无前。</code></pre><h4 id="7-如果让你选择，你就会在什么场景下用UDP？"><a href="#7-如果让你选择，你就会在什么场景下用UDP？" class="headerlink" title="7. 如果让你选择，你就会在什么场景下用UDP？"></a>7. 如果让你选择，你就会在什么场景下用UDP？</h4><pre><code>1）直播，直播对实时性要求很高。宁可丢包，也不要卡顿。因为对用户来讲，卡顿太影响体验了。所以很多直播应用都基于UDP实现了自己的视频传输协议。
+2）实时游戏，游戏的特点也是实时性比较高，在这种情况下，菜哦那个自定义的可靠的UDP协议，自定义重传策略，就能够把产生的延迟降到最低，减少网络问题对游戏造成的影响。</code></pre><p>如果用TCP的话，一旦丢包了，TCP会将后面的包缓存起来，等前面的包重传之后才会继续发送。想象一下网不好的情况下，就像北京早高峰堵车，前面一堆包在那排队等着重传，所以对实时性要求比较严格的情况下一定要用UDP。<br>UDP也做了许多优化，采用自定义重传机制，能够把丢包产生的延迟降到最低，避免网络问题对游戏造成影响。</p>
+<h4 id="8-说下你了解，或者你用过哪些接口，以及他们对应的服务？"><a href="#8-说下你了解，或者你用过哪些接口，以及他们对应的服务？" class="headerlink" title="8. 说下你了解，或者你用过哪些接口，以及他们对应的服务？"></a>8. 说下你了解，或者你用过哪些接口，以及他们对应的服务？</h4><p><img src="https://img-blog.csdnimg.cn/20200406140737163.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NDcxMjc=,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
 
       
-
     </div>
+    
+    
+    
+
+    
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    李蕴遒
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://liyunqiu-boot.github.io/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%89%EF%BC%89-%E8%81%8A%E8%81%8ATCP%E5%92%8CUDP/" title="网络面试题（三） 说说TCP和UDP">https://liyunqiu-boot.github.io/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%89%EF%BC%89-%E8%81%8A%E8%81%8ATCP%E5%92%8CUDP/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%BA%8C%EF%BC%89%E5%B8%A6%E4%BD%A0%E8%B5%B0%E8%BF%9BHTTP%E7%9A%84%E4%B8%96%E7%95%8C/" rel="next" title="网络面试题（二）带你走进HTTP的世界">
+                <i class="fa fa-chevron-left"></i> 网络面试题（二）带你走进HTTP的世界
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -418,6 +541,17 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div class="ds-thread" data-thread-key="2020/05/05/网络面试题（三）-聊聊TCP和UDP/"
+           data-title="网络面试题（三） 说说TCP和UDP" data-url="https://liyunqiu-boot.github.io/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%89%EF%BC%89-%E8%81%8A%E8%81%8ATCP%E5%92%8CUDP/">
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -438,8 +572,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -510,6 +653,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#说说TCP和UDP"><span class="nav-number">1.</span> <span class="nav-text">说说TCP和UDP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-先说说TCP和UDP有什么区别？"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. 先说说TCP和UDP有什么区别？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-你刚才说面向连接，什么是面向连接？"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. 你刚才说面向连接，什么是面向连接？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-TCP为什么是可靠连接呢？TCP是怎样保证了数据的正确性？"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. TCP为什么是可靠连接呢？TCP是怎样保证了数据的正确性？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-说说流量控制和拥塞控制？"><span class="nav-number">1.0.4.</span> <span class="nav-text">4. 说说流量控制和拥塞控制？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#流量控制："><span class="nav-number">1.0.4.1.</span> <span class="nav-text">流量控制：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#拥塞控制："><span class="nav-number">1.0.4.2.</span> <span class="nav-text">拥塞控制：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-你刚才说了报文头，具体说下TCP的报头吧，都有哪些内容，分别有什么用？"><span class="nav-number">1.0.5.</span> <span class="nav-text">4. 你刚才说了报文头，具体说下TCP的报头吧，都有哪些内容，分别有什么用？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-简单说下UDP的特点吧？"><span class="nav-number">1.0.6.</span> <span class="nav-text">5. 简单说下UDP的特点吧？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-说下TCP和UDP的主要应用场景吧？"><span class="nav-number">1.0.7.</span> <span class="nav-text">6.说下TCP和UDP的主要应用场景吧？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#TCP"><span class="nav-number">1.0.7.1.</span> <span class="nav-text">TCP</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#UDP"><span class="nav-number">1.0.7.2.</span> <span class="nav-text">UDP</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-如果让你选择，你就会在什么场景下用UDP？"><span class="nav-number">1.0.8.</span> <span class="nav-text">7. 如果让你选择，你就会在什么场景下用UDP？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-说下你了解，或者你用过哪些接口，以及他们对应的服务？"><span class="nav-number">1.0.9.</span> <span class="nav-text">8. 说下你了解，或者你用过哪些接口，以及他们对应的服务？</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -682,6 +841,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

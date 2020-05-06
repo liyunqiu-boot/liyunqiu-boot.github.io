@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>网络面试题（一） TCP的三次握手与四次挥手</title>
+    <url>/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%80%EF%BC%89-TCP%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/</url>
+    <content><![CDATA[<h2 id="TCP的三次握手与四次挥手"><a href="#TCP的三次握手与四次挥手" class="headerlink" title="TCP的三次握手与四次挥手"></a>TCP的三次握手与四次挥手</h2><h4 id="1-说说TCP的三次握手？"><a href="#1-说说TCP的三次握手？" class="headerlink" title="1. 说说TCP的三次握手？"></a>1. 说说TCP的三次握手？</h4><p><img src="https://img-blog.csdnimg.cn/20200406141726281.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NDcxMjc=,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<pre><code>第一次握手：建立连接时，客户端发送连接请求报文段，将SYN位置为1，随机产生seq number = x的数据包到服务器，客户端进入SYN_SENT状态，等待服务器确认。主机B由SYN=1知道，A要建立联机。
+第二次握手：服务器收到客户端发送的SYN报文段，需要对这个SYN报文段进行确认，这时ack为x+1（即seq+1）。同时自己也发送SYN请求信息，将SYN位置为1，seq为y。服务器将上述所有信息放到一个报文段中，即SYN+ACK包，并一发送给服务端。此时服务器进入SYN_RECV状态；
+第三次握手：客户端收到服务器的SYN+ACK包，检查ack number是否正确，即第一次发送的seq+1。以及位码ACK是否为1。若正确，将ack设置为y+1，ACK位码设置为1。向服务器发送ACK报文段。主机B确认seq值和ack=1后，则连接成功。这个包发送完毕后，客户端和服务器都进入ESTABLISHED（TCP连接成功）状态，完成三次握手。</code></pre><p>注意一下，上面的SYN、ACK为状态位。SYK表示发起一个连接，ACK为回复。seq number为序号，这个是为了解决乱序的问题。ack number是确认序号，如果没收到ack number则重新发送，解决了丢包的问题。</p>
+<h4 id="2-说说TCP的四次挥手？"><a href="#2-说说TCP的四次挥手？" class="headerlink" title="2. 说说TCP的四次挥手？"></a>2. 说说TCP的四次挥手？</h4><p><img src="https://img-blog.csdnimg.cn/20200406142329738.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NDcxMjc=,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<pre><code>第一次挥手：主机1（可以使客户端，也可以是服务器端），设置seq number和ack number，向主机2发送一个FIN报文段；此时，主机1进入FIN_WAIT_1状态；这表示主机1没有数据要发送给主机2了；
+第二次挥手：主机2收到了主机1发送的FIN报文段，向主机1回一个ACK报文段，ack number为seq number加1；主机1进入FIN_WAIT_2状态；主机2告诉主机1，我也没有数据要发送了，可以进行关闭连接了；
+第三次挥手：主机2向主机1发送FIN报文段，请求关闭连接，同时主机2进入CLOSE_WAIT状态；
+第四次挥手：主机1收到主机2发送的FIN报文段，向主机2发送ACK报文段，然后主机1进入TIME_WAIT状态；主机2收到主机1的ACK报文段以后，就关闭连接；此时，主机1等待2MSL后依然没有收到回复，则证明Server端已正常关闭，那好，主机1也可以关闭连接了。</code></pre><h4 id="3-TCP为什么是三次握手，四次挥手？"><a href="#3-TCP为什么是三次握手，四次挥手？" class="headerlink" title="3.TCP为什么是三次握手，四次挥手？"></a>3.TCP为什么是三次握手，四次挥手？</h4><h5 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h5><p>首先我们要知道三次握手的目的。<br>假设我们Client发出的SYN报文段并没有丢失，而是在某个网络结点长时间滞留了，以致延误到连接释放以后的某个时间才到Server。<br>So，三次握手的目的为：</p>
+<pre><code>防止已失效的连接请求报文段突然又传到了Server端，因而产生错误</code></pre><p>什么错误呢？想象一下如果是两次握手会怎么样？server收到了请求报文段，知道了 哦 Client要请求建立连接，那我回个确认报文段，新的连接就建立了。这就是两次握手，你们觉得妥么？<br>Client发的是失效报文段呀，都已经失效了大哥，你回个ACK报文段就跟人家建立连接了？两次握手显然不行，所以需要三次握手。<br>三次握手会怎样呢？由于Client并没有发出建立连接的请求，这请求是我刚才发的，早就失效了。你说我之前死皮赖脸追你你不同意，现在我不喜欢你了，你又反追回来，那我肯定不同意。所以我不会理会你。Server也不会傻了吧唧在那等着，三次握手避免了让server端一直等待，浪费资源。过了一会没收到Client的ACK确认报文段他就放弃了，不等了。<br>So，总结一下，</p>
+<pre><code>三次握手保证了数据的正确性，避免了因网络问题带来的问题。同时防止server端的一直等待，浪费资源。</code></pre><h5 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h5><p>很多小伙伴会有疑问，为啥握手是三次，挥手成四次了？<br>好聚好散嘛，毕竟相爱一场，告别要正式一些。<br>开玩笑，其实这是由于TCP半关闭造成的。啥是半关闭呢？简单来说，一方发了FIN，另一方没有发FIN之前，还可以正常发送数据。<br>因为请求建立连接的时候</p>
+<pre><code>Client发个SYN，Server可以回复SYN+ACK报文。因为这是请求建立连接，注意，连接还没建立呢。</code></pre><p>而请求关闭连接呢，关闭之前所有数据都发完了么？没发完你就关闭了，是不是出问题。</p>
+<pre><code>所以，主机1发个FIN报文段，主机2先回个ACK报文段，告诉主机1，OK我知道你要请求关闭连接，别着急，我这还有报文没发完呢。等主机2所有报文都发完了，再回主机1个FIN报文段。</code></pre><h4 id="4-TIME-WAIT状态了解么？这里面有个时间，聊一下？"><a href="#4-TIME-WAIT状态了解么？这里面有个时间，聊一下？" class="headerlink" title="4. TIME_WAIT状态了解么？这里面有个时间，聊一下？"></a>4. TIME_WAIT状态了解么？这里面有个时间，聊一下？</h4><pre><code>先明说，这里有个时间的概念是2MSL。</code></pre><p>首先科普一下MSL</p>
+<pre><code>MSL（Maximum Segment Lifetime），指一个片段在网络中的最大存活时间</code></pre><p>这是在TCP四次挥手的后两次做的文章。<br>我们知道，主机2发完FIN报文段后进入了CLOSE_WAIT状态，同时，主机1发完ACK报文段进入TIME_WAIT状态。这个时候，主机1要等2MSL的时间，如果没有再次收到主机2发来的FIN报文段，那么说明连接成功关闭了。<br>为什么主机1要等2MSL呢？因为我们必须假设网络是不可靠的，我主机1最后发的ACK报文段可能出问题了。所以，主机2等了MSL收不到主机1发的ACK，就会重新发FIN报文段给主机1。所以主机1才要等2MSL。这保证了数据的正确性，避免了因网络问题，报文段丢失所带来的问题。</p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>网络面试题（二）带你走进HTTP的世界</title>
+    <url>/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%BA%8C%EF%BC%89%E5%B8%A6%E4%BD%A0%E8%B5%B0%E8%BF%9BHTTP%E7%9A%84%E4%B8%96%E7%95%8C/</url>
+    <content><![CDATA[<h4 id="1-什么是HTTP？"><a href="#1-什么是HTTP？" class="headerlink" title="1. 什么是HTTP？"></a>1. 什么是HTTP？</h4><p>HTTP协议（HyperText Transfer Protocol，超文本传输协议）是因特网上应用最为广泛的一种网络传输协议，所有的WWW文件都必须遵守这个标准。</p>
+<h4 id="2-HTTP的工作原理"><a href="#2-HTTP的工作原理" class="headerlink" title="2. HTTP的工作原理"></a>2. HTTP的工作原理</h4><p>HTTP协议工作于客户端-服务端架构上。浏览器作为HTTP客户端通过URL向HTTP服务端即WEB服务器发送所有请求。<br>Web服务器有：Apache服务器，IIS服务器（Internet Information Services）等。<br>Web服务器根据接收到的请求后，向客户端发送响应信息。<br>HTTP默认端口号为80，但是你也可以改为8080或者其他端口。后续要讲到的HTTPS的默认端口号为443。</p>
+<h4 id="3-HTTP的三无"><a href="#3-HTTP的三无" class="headerlink" title="3. HTTP的三无"></a>3. HTTP的三无</h4><p>1）HTTP是无连接：无连接的含义是限制每次连接只处理一个请求。服务器处理完客户的请求，并收到客户的应答后，即断开连接。采用这种方式可以节省传输时间。<br>2）HTTP是媒体独立的：这意味着，只要客户端和服务器知道如何处理的数据内容，任何类型的数据都可以通过HTTP发送。客户端以及服务器指定使用适合的MIME-type内容类型。<br>3）HTTP是无状态：HTTP协议是无状态协议。无状态是指协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息，则它必须重传，这样可能导致每次连接传送的数据量增大。另一方面，在服务器不需要先前信息时它的应答就较快。<strong>正是因为HTTP的无状态，才有cookie和session的诞生。</strong></p>
+<h4 id="4-Request-amp-Response"><a href="#4-Request-amp-Response" class="headerlink" title="4. Request &amp; Response"></a>4. Request &amp; Response</h4><p><strong>客户端请求消息</strong><br>客户端发送一个HTTP请求到服务器的请求消息包括以下格式：请求行（request line）、请求头部（header）、空行和请求数据四个部分组成，下图给出了请求报文的一般格式。<br><img src="https://img-blog.csdnimg.cn/20200407231841596.png#pic_center" alt="在这里插入图片描述"><br><strong>服务器响应消息</strong><br>HTTP响应也由四个部分组成，分别是：状态行、消息报头、空行和响应正文。<br><img src="https://img-blog.csdnimg.cn/20200407231918680.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NDcxMjc=,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>看文字和图片可能有点晦涩难懂，For example<br>客户端请求：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">GET /hello.txt HTTP/<span class="number">1.1</span></span><br><span class="line">User-Agent: curl/<span class="number">7.16</span><span class="number">.3</span> libcurl/<span class="number">7.16</span><span class="number">.3</span> OpenSSL/<span class="number">0.9</span><span class="number">.7</span>l zlib/<span class="number">1.2</span><span class="number">.3</span></span><br><span class="line">Host: www.example.com</span><br><span class="line">Accept-Language: en, mi</span><br></pre></td></tr></table></figure>
+<p>服务端响应：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">HTTP/<span class="number">1.1</span> <span class="number">200</span> OK</span><br><span class="line"><span class="built_in">Date</span>: Mon, <span class="number">27</span> Jul <span class="number">2009</span> <span class="number">12</span>:<span class="number">28</span>:<span class="number">53</span> GMT</span><br><span class="line">Server: Apache</span><br><span class="line">Last-Modified: Wed, <span class="number">22</span> Jul <span class="number">2009</span> <span class="number">19</span>:<span class="number">15</span>:<span class="number">56</span> GMT</span><br><span class="line">ETag: <span class="string">"34aa387-d-1568eb00"</span></span><br><span class="line">Accept-Ranges: bytes</span><br><span class="line">Content-Length: <span class="number">51</span></span><br><span class="line">Vary: Accept-Encoding</span><br><span class="line">Content-Type: text/plain</span><br></pre></td></tr></table></figure>
+<h4 id="5-HTTP的请求方法"><a href="#5-HTTP的请求方法" class="headerlink" title="5. HTTP的请求方法"></a>5. HTTP的请求方法</h4><p>根据 HTTP 标准，HTTP 请求可以使用多种请求方法。<br>HTTP1.0 定义了三种请求方法： GET, POST 和 HEAD方法。<br>HTTP1.1 新增了六种请求方法：OPTIONS、PUT、PATCH、DELETE、TRACE 和 CONNECT 方法。<br>序号 | 方法 | 描述<br>——– | —– | ——<br>1  | GET | 请求指定的页面信息，并返回实体主体。<br>2  | HEAD | 类似于 GET 请求，只不过返回的响应中没有具体的内容，用于获取报头<br>3  | POST | 向指定资源提交数据进行处理请求（例如提交表单或者上传文件）。数据被包含在请求体中。POST 请求可能会导致新的资源的建立和/或已有资源的修改。<br>4  | PUT | 从客户端向服务器传送的数据取代指定的文档的内容。<br>5  | DELETE | 请求服务器删除指定的页面。<br>6  | CONNECT | HTTP/1.1 协议中预留给能够将连接改为管道方式的代理服务器。<br>7  | OPTIONS | 允许客户端查看服务器的性能。<br>8  | TRACE | 回显服务器收到的请求，主要用于测试或诊断。<br>9  | PATCH | 是对 PUT 方法的补充，用来对已知资源进行局部更新 。</p>
+<h4 id="6-HTTP状态码"><a href="#6-HTTP状态码" class="headerlink" title="6. HTTP状态码"></a>6. HTTP状态码</h4><p>当浏览者访问一个网页时，浏览者的浏览器会向网页所在服务器发出请求。当浏览器接收并显示网页前，此网页所在的服务器会返回一个包含HTTP状态码的信息头（server header）用以响应浏览器的请求。<br><strong>下面是常见的HTTP状态码：</strong><br>200 - 请求成功<br>301 - 资源（网页等）被永久转移到其它URL<br>404 - 请求的资源（网页等）不存在<br>500 - 内部服务器错误<br><strong>HTTP状态码分类</strong><br>分类   | 分类描述<br>——– | —–<br>1**  | 信息，服务器收到请求，需要请求者继续执行操作<br>2**  | 成功，操作被成功接收并处理<br>3**  | 重定向，需要进一步的操作以完成请求<br>4** | 客户端错误，请求包含语法错误或无法完成请求<br>5** | 服务器错误，服务器在处理请求的过程中发生了错误</p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>网络面试题（三） 说说TCP和UDP</title>
+    <url>/2020/05/05/%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88%E4%B8%89%EF%BC%89-%E8%81%8A%E8%81%8ATCP%E5%92%8CUDP/</url>
+    <content><![CDATA[<h2 id="说说TCP和UDP"><a href="#说说TCP和UDP" class="headerlink" title="说说TCP和UDP"></a>说说TCP和UDP</h2><h4 id="1-先说说TCP和UDP有什么区别？"><a href="#1-先说说TCP和UDP有什么区别？" class="headerlink" title="1. 先说说TCP和UDP有什么区别？"></a>1. 先说说TCP和UDP有什么区别？</h4><pre><code>1）TCP是面向连接的，UDP是面向无连接的
+2）TCP保证了数据的正确性，而UDP可能丢包
+3）TCP保证数据顺序，而UDP不保证
+4）TCP是面向字节流的，而UDP是基于数据报的
+5）TCP数据传输慢，而UDP数据传输快
+6）UDP相比TCP来说，程序结构较简单。TCP对系统资源要求较多，UDP对系统资源要求较少</code></pre><h4 id="2-你刚才说面向连接，什么是面向连接？"><a href="#2-你刚才说面向连接，什么是面向连接？" class="headerlink" title="2. 你刚才说面向连接，什么是面向连接？"></a>2. 你刚才说面向连接，什么是面向连接？</h4><pre><code>在互通之前，面向连接的协议会先建立连接，比如TCP的三次握手，而UDP则不会。所以说TCP是面向连接，UDP是面向无连接的。</code></pre><h4 id="3-TCP为什么是可靠连接呢？TCP是怎样保证了数据的正确性？"><a href="#3-TCP为什么是可靠连接呢？TCP是怎样保证了数据的正确性？" class="headerlink" title="3. TCP为什么是可靠连接呢？TCP是怎样保证了数据的正确性？"></a>3. TCP为什么是可靠连接呢？TCP是怎样保证了数据的正确性？</h4><pre><code>1）数据包校验：目的是检测数据在传输过程中的任何变化，若校验出包有错，则丢弃报文段且不给出响应，这时TCP发送数据端超时后会重发数据。
+2）对失序的数据包重新排序：若TCP报文段失序到达，则将失序的数据重新排序，再交给应用层。
+3）丢弃重复数据
+4）应答机制：TCP一端收到另一端的数据，它将发个确认报文段。
+5）超时重发：当TCP发出一个段后，它将启动一个定时器，等待目的端确认收到这个报文段。如果不能及时收到一个确认，将重发这个报文段。
+6）流量控制：TCP每一边都有固定大小的缓冲空间。TCP的接收端只允许发送端发送我缓冲区所能接纳的数据，防止我缓冲区数据溢出。这就是流量控制。</code></pre><h4 id="4-说说流量控制和拥塞控制？"><a href="#4-说说流量控制和拥塞控制？" class="headerlink" title="4. 说说流量控制和拥塞控制？"></a>4. 说说流量控制和拥塞控制？</h4><p>区别：流量控制是防止数据发送的过快，接收方来不及接收，造成数据的丢失。<br>拥塞控制是防止过多的数据注入网络中，导致网络中的路由器或链路过载。</p>
+<h5 id="流量控制："><a href="#流量控制：" class="headerlink" title="流量控制："></a>流量控制：</h5><p>AB连接建立起来后，会进行窗口协议。B会将自己的窗口大小告诉A，告诉它你发的数据大小不能超过我的窗口大小。<br>当B的缓冲区满后，会给A发个ACK，告诉A我这满了，别再发了。当B富裕的时候，也给A发个ACK，告诉A我这有位置了，你发吧。但是如果这个ACK丢了呢？<br>网络就是要考虑各种报文段丢了的情况…客户端会设置一个计时器，时间到了之后还没收到窗口更新报文，就发一个查询窗口的报文段，这样就避免了死锁等待。<br><img src="https://img-blog.csdn.net/20140509220855687?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWVjaGFvZGVjaHVudGlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="在这里插入图片描述"></p>
+<h5 id="拥塞控制："><a href="#拥塞控制：" class="headerlink" title="拥塞控制："></a>拥塞控制：</h5><p>几种拥塞控制的方法：慢开始，拥塞避免，快重传，快恢复。<br>发送方维持一个拥塞窗口（cwnd）的状态变量。记住，这个cwnd的大小取决于网络的拥塞程度，是动态变化的。<br>1）慢开始算法：当主机发送数据时，如果立即把大量数据字节注入网络中，那么就有可能引起网络拥塞。所以刚开始肯定要慢慢发，试探性的发，从小到大逐渐增大发送窗口。我们先把cwnd设置为一个最大报文段MSS，没收到一个确认报文段后，拥塞窗口再增一个MSS。用这种方式增大发送方的拥塞窗口显然很合理。<br>2）拥塞避免：每经过一个往返时间RTT，就把发送方的拥塞窗口cwnd加1，而不是慢开始那样加倍。这样拥塞窗口会按线性规律缓慢增长。<br>3）快重传：如果发出去的报文段丢了的话，对方是不会给你发确认报文段的。到了那个重传计时器设定的时间，发送端就会发送确认报文段的。如果没有快重传是什么样呢？<br>发送端：你收着没呢？ 接收端：…<br>发送端：你收着没呢？ 接收端：…<br>发送端：你收着没呢？ 接收端：…<br>OK，这时候，发送端发了三次确认报文段后，你接收端都不理我，那肯定没收到啊。那我重发一下吧。这就是快重传。<br>4）快恢复：搭配快重传来的一个算法。<br><img src="https://img-blog.csdnimg.cn/20190701103337907.png" alt="在这里插入图片描述"></p>
+<h4 id="4-你刚才说了报文头，具体说下TCP的报头吧，都有哪些内容，分别有什么用？"><a href="#4-你刚才说了报文头，具体说下TCP的报头吧，都有哪些内容，分别有什么用？" class="headerlink" title="4. 你刚才说了报文头，具体说下TCP的报头吧，都有哪些内容，分别有什么用？"></a>4. 你刚才说了报文头，具体说下TCP的报头吧，都有哪些内容，分别有什么用？</h4><p><img src="https://img-blog.csdnimg.cn/20200405201704612.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NDcxMjc=,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<pre><code>首先，源端口和目的端口是不可少的。
+接下来是包的序号（seq number），主要是为了解决乱序的问题。你不编号个号鬼知道这么多包谁先来的，这不就保证了按序到达么。
+确认序号（ack number），发出去的包应该有确认，这样能知道对方是否收到，如果没收到的话就重新发送一次，这个解决的是不丢包的问题。
+状态位。SYN是发起一个连接，ACK是回复，RST是重新连接，FIN是结束连接。因为TCP是面向连接的协议，因此需要双方维护连接的状态，这些状态位的包会引起双方的状态变更。
+窗口大小，TCP要做流量控制，需要通信双方各声明一个窗口，标识自己当前的处理能力。</code></pre><h4 id="5-简单说下UDP的特点吧？"><a href="#5-简单说下UDP的特点吧？" class="headerlink" title="5. 简单说下UDP的特点吧？"></a>5. 简单说下UDP的特点吧？</h4><pre><code>1）沟通简单，不需要大量的数据结构，处理逻辑和报头字段
+2）轻信他人，它不会建立连接，但是会监听这个地方，谁都可以传给它数据，它也可以传给任何人数据，甚至可以同时传给多个人数据。
+3）愣头青，做事不懂得变通。UDP不会根据网络的情况进行拥塞控制，无论是否丢包，它该咋发还咋发。</code></pre><h4 id="6-说下TCP和UDP的主要应用场景吧？"><a href="#6-说下TCP和UDP的主要应用场景吧？" class="headerlink" title="6.说下TCP和UDP的主要应用场景吧？"></a>6.说下TCP和UDP的主要应用场景吧？</h4><h5 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h5><pre><code>当对网络通讯质量有要求的时候。比如，整个数据都要准确无误的传递给对方，这往往用于一些要求可靠的应用。
+比如HTTP、HTTPS、FTP等传输文件的协议。POP、SMTP等邮件传输的协议。</code></pre><h5 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h5><pre><code>1）UDP主要用在资源少，网络情况稳定的内网，或者对于丢包不敏感的应用。
+2）不需要一对一沟通，建立连接，而是可以广播的应用。因为它不面向连接，所以可以做到一对多，承担广播或者多播的协议。
+3）需要处理速度快，可以容忍丢包，即使网络拥塞，也毫不退缩，一往无前。</code></pre><h4 id="7-如果让你选择，你就会在什么场景下用UDP？"><a href="#7-如果让你选择，你就会在什么场景下用UDP？" class="headerlink" title="7. 如果让你选择，你就会在什么场景下用UDP？"></a>7. 如果让你选择，你就会在什么场景下用UDP？</h4><pre><code>1）直播，直播对实时性要求很高。宁可丢包，也不要卡顿。因为对用户来讲，卡顿太影响体验了。所以很多直播应用都基于UDP实现了自己的视频传输协议。
+2）实时游戏，游戏的特点也是实时性比较高，在这种情况下，菜哦那个自定义的可靠的UDP协议，自定义重传策略，就能够把产生的延迟降到最低，减少网络问题对游戏造成的影响。</code></pre><p>如果用TCP的话，一旦丢包了，TCP会将后面的包缓存起来，等前面的包重传之后才会继续发送。想象一下网不好的情况下，就像北京早高峰堵车，前面一堆包在那排队等着重传，所以对实时性要求比较严格的情况下一定要用UDP。<br>UDP也做了许多优化，采用自定义重传机制，能够把丢包产生的延迟降到最低，避免网络问题对游戏造成影响。</p>
+<h4 id="8-说下你了解，或者你用过哪些接口，以及他们对应的服务？"><a href="#8-说下你了解，或者你用过哪些接口，以及他们对应的服务？" class="headerlink" title="8. 说下你了解，或者你用过哪些接口，以及他们对应的服务？"></a>8. 说下你了解，或者你用过哪些接口，以及他们对应的服务？</h4><p><img src="https://img-blog.csdnimg.cn/20200406140737163.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA4NDcxMjc=,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+  </entry>
+</search>
